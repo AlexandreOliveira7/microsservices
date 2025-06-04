@@ -9,6 +9,9 @@ import {
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 
+app.setSerializerCompiler(serializerCompiler);
+app.setValidatorCompiler(validatorCompiler);
+
 app
   .listen({
     host: '0.0.0.0',
@@ -17,3 +20,20 @@ app
   .then(() => {
     console.log('[orders] server running');
   });
+
+app.post(
+  '/',
+  {
+    schema: {
+      body: z.object({
+        amount: z.number(),
+      }),
+    },
+  },
+  (request, reply) => {
+    const { amount } = request.body;
+    console.log('Creating order with amount', amount);
+
+    return reply.status(201).send();
+  },
+);
