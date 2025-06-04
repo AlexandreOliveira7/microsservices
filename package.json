@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.2",
+    "@types/amqplib": "^0.10.7",
     "@types/node": "^22.15.29",
     "drizzle-kit": "^0.31.1",
     "typescript": "^5.8.3"
