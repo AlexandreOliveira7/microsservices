@@ -21,6 +21,10 @@ app
     console.log('[orders] server running');
   });
 
+app.get('/health', () => {
+  return 'ok';
+});
+
 app.post(
   '/',
   {
