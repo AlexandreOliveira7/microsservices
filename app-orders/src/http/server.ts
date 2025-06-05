@@ -9,9 +9,11 @@ import {
   type ZodTypeProvider,
 } from 'fastify-type-provider-zod';
 import { trace } from '@opentelemetry/api';
+import { setTimeout } from 'node:timers/promises';
 import { db } from '../db/client.ts';
 import { schema } from '../db/schema/index.ts';
 import { dispatchOrderCreated } from '../broker/messages/order-created.ts';
+import { tracer } from '../tracer/tracer.ts';
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 
@@ -55,6 +57,14 @@ app.post(
       customerId: 'b22599e8-48d5-44c9-b5e9-945c6609f90f',
       amount,
     });
+
+    const span = tracer.startSpan('aqui está demorando');
+
+    span.setAttribute('teste', 'testando');
+
+    await setTimeout(2000);
+
+    span.end();
 
     trace.getActiveSpan()?.setAttribute('order_id', orderId);
 
