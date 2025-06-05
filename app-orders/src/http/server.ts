@@ -8,7 +8,7 @@ import {
   validatorCompiler,
   type ZodTypeProvider,
 } from 'fastify-type-provider-zod';
-import { channels } from '../broker/channels/index.ts';
+import { trace } from '@opentelemetry/api';
 import { db } from '../db/client.ts';
 import { schema } from '../db/schema/index.ts';
 import { dispatchOrderCreated } from '../broker/messages/order-created.ts';
@@ -50,18 +50,20 @@ app.post(
 
     const orderId = randomUUID();
 
+    await db.insert(schema.orders).values({
+      id: orderId,
+      customerId: 'b22599e8-48d5-44c9-b5e9-945c6609f90f',
+      amount,
+    });
+
+    trace.getActiveSpan()?.setAttribute('order_id', orderId);
+
     dispatchOrderCreated({
       orderId,
       amount,
       customer: {
         id: 'b22599e8-48d5-44c9-b5e9-945c6609f90f',
       },
-    });
-
-    await db.insert(schema.orders).values({
-      id: orderId,
-      customerId: 'b22599e8-48d5-44c9-b5e9-945c6609f90f',
-      amount,
     });
 
     return reply.status(201).send();
