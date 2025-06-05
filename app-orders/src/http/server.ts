@@ -1,3 +1,4 @@
+import '@opentelemetry/auto-instrumentations-node/register';
 import { fastify } from 'fastify';
 import { fastifyCors } from '@fastify/cors';
 import { randomUUID } from 'node:crypto';
