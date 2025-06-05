@@ -1,3 +1,4 @@
+import '../broker/subscriber.ts';
 import { fastify } from 'fastify';
 import { fastifyCors } from '@fastify/cors';
 import { randomUUID } from 'node:crypto';
@@ -24,7 +25,7 @@ app.get('/health', () => {
 app
   .listen({
     host: '0.0.0.0',
-    port: 3333,
+    port: 3334,
   })
   .then(() => {
     console.log('[invoices] server running');
