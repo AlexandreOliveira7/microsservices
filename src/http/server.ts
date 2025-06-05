@@ -1,5 +1,6 @@
 import { fastify } from 'fastify';
 import { fastifyCors } from '@fastify/cors';
+import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import {
   serializerCompiler,
@@ -7,6 +8,8 @@ import {
   type ZodTypeProvider,
 } from 'fastify-type-provider-zod';
 import { channels } from '../broker/channels/index.ts';
+import { db } from '../db/client.ts';
+import { schema } from '../db/schema/index.ts';
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 
@@ -44,6 +47,7 @@ app.post(
     console.log('Creating order with amount', amount);
 
     channels.orders.sendToQueue('orders', Buffer.from('hello world'));
+    // await db.insert(schema.orders).values({});
 
     return reply.status(201).send();
   },
