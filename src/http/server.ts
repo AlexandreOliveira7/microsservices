@@ -47,7 +47,11 @@ app.post(
     console.log('Creating order with amount', amount);
 
     channels.orders.sendToQueue('orders', Buffer.from('hello world'));
-    // await db.insert(schema.orders).values({});
+    await db.insert(schema.orders).values({
+      id: randomUUID(),
+      customerId: 'b22599e8-48d5-44c9-b5e9-945c6609f90f',
+      amount,
+    });
 
     return reply.status(201).send();
   },
