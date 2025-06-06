@@ -8,6 +8,13 @@ services:
     host: host.docker.internal
     port: 3333
     path: /orders
+    routes:
+      - name: api
+        protocols:
+          - http
+          - https
+        paths:
+          - /orders
 
 plugins:
   - name: cors
