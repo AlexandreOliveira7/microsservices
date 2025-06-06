@@ -29,3 +29,18 @@ export const ordersDockerImage = new docker.Image('orders-image', {
     },
   ],
 });
+
+const cluster = new awsx.classic.ecs.Cluster('orders-cluster');
+
+const ordersService = new awsx.classic.ecs.FargateService('fargate-orders', {
+  cluster,
+  desiredCount: 1,
+  waitForSteadyState: false,
+  taskDefinitionArgs: {
+    container: {
+      image: ordersDockerImage.ref,
+      cpu: 256,
+      memory: 512,
+    },
+  },
+});
