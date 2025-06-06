@@ -8,8 +8,6 @@ services:
     host: host.docker.internal
     port: 3333
     path: /orders
-    connect_timeout: 3000
-    retries: 5
     routes:
       - name: api
         protocols:
